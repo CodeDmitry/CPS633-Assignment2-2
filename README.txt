@@ -1,9 +1,9 @@
 
 SUMMARY:
-   part2.rar: a NodeJS console application demonstration the formula, FRR, FAR, and EER.
-   index.html: an offline web application demonstrating RBAC; it has some interesting work regarding part2 but these parts 
+   part2.rar(Part2): a NodeJS console application demonstration the formula, FRR, FAR, and EER.
+   index.html(Part3): an offline web application demonstrating RBAC; it has some interesting work regarding part2 but these parts 
         are merely there as a proof of concept.
-   
+   Part4-WordProblems.docx(Part4): word problems   
 
 files:
     part2.rar: a NodeJS console application demonstrating the formula, FRR, FAR, and EER.
