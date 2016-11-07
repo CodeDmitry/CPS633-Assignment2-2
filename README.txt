@@ -1,3 +1,10 @@
+
+SUMMARY:
+   part2.rar: a NodeJS console application demonstration the formula, FRR, FAR, and EER.
+   index.html: an offline web application demonstrating RBAC; it has some interesting work regarding part2 but these parts 
+        are merely there as a proof of concept.
+   
+
 files:
     part2.rar: a NodeJS console application demonstrating the formula, FRR, FAR, and EER.
     index.html: the standalone html webpage that hosts our modules.
@@ -20,7 +27,7 @@ files:
             
     styles: style.css: single custom style 
 
-summary:
+details:
     index.html is a standalone webpage designed to be runnable on modern
         browsers out of the zip archive. The dependencies use relative paths
         and the project should be runnable by simply opening index.html in
