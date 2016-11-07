@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CPS633 Lab2</title>
+
+    <!-- boilerplate/web-frameworks -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />   
+    <link rel="stylesheet" href="deps/bootstrap.css" />
+    <script src="deps/angular.js"></script>
+    <script src="deps/jquery.js"></script> 
+    <script src="deps/bootstrap.js"></script>
+
+    <!-- custom style -->
+    <link rel="stylesheet" href="styles/style.css" />
+    
+    <script src="scripts/biometrics.js"></script>
+    <script src="scripts/system.js"></script>
+    <script src="app.js"></script>
+
+    <script src="scripts/contentCtrl.js"></script>
+    <script src="scripts/homeCtrl.js"></script>
+    <script src="scripts/enrollCtrl.js"></script>
+    <script src="scripts/enrollFeedbackDirective.js"></script>
+    <script src="scripts/systemCtrl.js"></script>
+    <script src="scripts/controlCtrl.js"></script>
+    <script src="scripts/modifyAclCtrl.js"></script>
+    <script src="scripts/changeUserGroupCtrl.js"></script>    
+  </head>
+  <body data-ng-app="app">
+    <navigation-bar></navigation-bar>
+
+    <div id="content" data-ng-controller="contentCtrl" data-ng-include src="activePage"></div>
+
+    <div id="template-cache">
+      <!-- "virtual" pages are below -->
+      
+      <script type="text/ng-template" id="navigation-bar-template">
+        <nav class="navbar navbar-inverse navbar-static-top">
+          <ul class="nav navbar-nav">
+            <li><a href="javascript:void(0)" data-ng-click="activePage='home.html'" id="tpl-link">Home</a></li>
+            <li><a href="javascript:void(0)" data-ng-click="activePage='enrollment.html'" id="tpl-link">Enrollment</a></li>
+            <li><a href="javascript:void(0)" data-ng-click="activePage='system.html'" id="tpl-link">System</a></li>
+            <li><a href="javascript:void(0)" data-ng-click="activePage='control.html'" id="tpl-link">Control</a></li>
+          </ul>
+        </nav>
+      </script>
+      
+      <script type="text/ng-template" id="home.html">
+        <div class="container-fluid" data-ng-controller="homeCtrl">
+          <div class="row">
+            <div class="col-sm-12">            
+              <div class="jumbotron">
+                <h1 class="text-center">CPS633 Lab #2</h1>
+                <h3 class="text-center">Biometrics</h3>
+              </div>            
+                <p>console:</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-11" height="24em">
+              <textarea 
+                id="homeInput"
+                data-ng-model="model.inputText"
+                style="font-family: courier new; width: 100%; height: 7em;"></textarea>
+            </div>
+            <div class="col-sm-1">
+              <div class="container-fluid">
+                <button 
+                   data-ng-click="evaluate()"
+                   class="btn btn-lg btn-primary pull-right">Go</button>
+              </div>
+            </div>                
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <textarea 
+                 id="homeFeedback"
+                 data-ng-model="model.feedbackText" 
+                 style="font-family: courier new; width: 100%; height: 24em;"></textarea>             
+            </div>
+          </div>
+        </div>
+      </script>
+      
+      <script type="text/ng-template" id="enrollment.html">
+        <div class="flex" data-ng-controller="enrollCtrl">
+          <div class="flex">
+            <div class="enrollment-box">
+              <div style="margin-bottom: 15px; margin-top: 15px;">
+                <div style="display: flex; justify-content: center;"-->
+                
+                <div class="container-fluid" style="padding: 1px">
+                  <div class="input-group margined"style="margin: auto">                
+                    <span class="input-group-addon" style="width: 10ch">User ID: </span>
+                    <input 
+                       data-ng-model="model.text"
+                       data-ng-keypress="keyPress($event)"
+                       data-ng-keydown="keyDown($event)" 
+                       data-ng-keyup="keyUp($event)"                     
+                       data-ng-model="model.text" type="text" class="form-control" placeholder="user01" required />
+                  </div>            
+              
+                  <div class="input-group margined" style="margin: auto">
+                    <span class="input-group-addon" style="width: 10ch">Group: </span>
+                    <input data-ng-model="model.groupName" type="text" class="form-control" placeholder="Sales" required />
+                  </div>            
+                </div>
+              </div>
+              <div class="pull-right">
+                <button class="btn btn-danger" data-ng-click="resetText()">Reset</button>
+                <button class="btn btn-primary" data-ng-click="enroll()">Enroll</button>
+              </div>
+            </div>
+            <textarea data-enroll-feedback>{{model.feedback}}</textarea>
+          </div>
+        </div>
+      </script>
+      
+      <script type="text/ng-template" id="system.html">
+        <div is="loginView" data-ng-controller="systemCtrl">
+          <!-- login -->
+          <div data-ng-hide="sessionActive()">        
+            <div class="alert alert-danger">
+              <p>This view should allow the user to provide multiple biometric samples to test against enrollment data.</p>
+              <p>This feature is not yet implemented, so simply enter the user id instead.</p>
+            </div>
+            
+            <div class="jumbotron">
+              <h1 class="text-center">System Login</h1>
+            </div> 
+            
+            <div id="loginForm" class="form-group" data-ng-class="validate() ? 'has-success' : 'has-error'">
+              <div class="container-fluid">
+                <div class="input-group">
+                  <span class="input-group-addon">user id: </span>
+                  <input 
+                     class="form-control" 
+                     data-ng-model="model.loginString" 
+                     data-ng-keydown="validate()" 
+                     type="text" 
+                     placeholder="enter user id here" 
+                     required />
+                </div>            
+              </div>
+              
+              <div class="container-fluid" style="padding-top: 15px">
+                <button class="btn btn-sm btn-primary" data-ng-click="logIn()">Log In</button>
+              </div>
+              
+              <div class="alert alert-danger" data-ng-show="model.hasLoginErrorMessage">{{model.loginErrorMessage}}</div>
+            </div> <!-- end #loginForm -->
+          </div> <!-- end #loginView -->
+          
+          <div id="sessionView" data-ng-show="sessionActive()">
+            <div class="jumbotron">
+              <h3>Welcome, {{model.session.user_id}}<span data-ng-show="model.session.user_group">&lt;{{model.session.user_group}}&gt;</span></h3>
+              <button class="btn btn-sm btn-primary" data-ng-click="logOut()">Log Out</button>
+            </div>
+            <p>Choose a file</p>
+            <select data-ng-model="model.session.selectedFile">
+              <option data-ng-repeat="file in model.session.knownFiles">{{file}}</option>
+            </select>
+            <div>
+              <input type="checkbox" data-ng-model="model.session.permissions.read">Read</input>
+              <input type="checkbox" data-ng-model="model.session.permissions.write">Write</input>
+              <input type="checkbox" data-ng-model="model.session.permissions.execute">Execute</input>
+              <button class="btn btn-sm btn-danger" data-ng-click="test()">Test</button>
+            </div>
+            <button class="btn btn-sm btn-primary" data-ng-click="refresh()">Refresh</button>
+          </div>
+        </div> <!-- end #sessionView -->
+      </script>
+      
+      <script type="text/ng-template" id="control.html">
+        <div data-ng-controller="controlCtrl">
+        
+          <div id="change-user-group" class="container-fluid"
+             data-ng-controller="changeUserGroupCtrl">
+            <div class="row">
+              <div class="well well-sm margined">
+                <fieldset>
+                  <legend>Change user group</legend>
+                  <div class="row">
+                    <div class="col-sm-1">User ID:</div>
+                    <div class="col-sm-11"><input data-ng-model="model.user_id" /></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-1">New Group:</div>
+                    <div class="col-sm-11"><input data-ng-model="model.groupName" /></div>                    
+                  </div>
+                  <button data-ng-click="changeUserGroup()" class="btn btn-primary btn-sm">Change Role</button>
+                </fieldset>
+              </div>
+            </div>
+          </div><!-- end #change-user-group -->
+          
+          <div id="modify-access-control-lists" class="container-fluid"
+             data-ng-controller="modifyAclCtrl">
+            <div class="row">
+              <div class="well well-sm margined">
+                <fieldset>
+                  <legend>Modify Access Control Lists</legend>
+                  <div class="row">
+                    <div class="col-sm-1">User ID:</div>
+                    <div class="col-sm-11"><input data-ng-model="model.user_id" /></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-1">File Name:</div>
+                    <div class="col-sm-11"><input data-ng-model="model.fileName" /></div>                    
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-1">Permissions:</div>
+                    <div class="col-sm-11">
+                      <input data-ng-model="model.read" type="checkbox">Read</input>
+                      <input data-ng-model="model.write" type="checkbox">Write</input>
+                      <input data-ng-model="model.execute" type="checkbox">Execute</input>
+                    </div>                    
+                  </div>                  
+                  <button data-ng-click="setPermissions()" class="btn btn-primary btn-sm">Set Permissions</button>
+                </fieldset>
+              </div>
+            </div>
+          </div><!-- end #change-user-group -->          
+        </div>
+      </script>      
+    </div> <!-- end #template-cache -->
+  </body>
+</html>

@@ -1,0 +1,103 @@
+body {
+    margin: 0px;
+    font-size: 10pt;    
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+/* avoid vertical scrollbar causing horizontal scrolling 
+ * i know, sounds silly, but its a thing. 
+ */
+
+@media (min-width: 400px) {
+    /* if not mobile, fix scrollbar bug(mobile devices dont have scrollbar bug) */
+    #content {
+        padding-right: 15px;
+        box-sizing: border-box;
+    }
+}
+
+div {
+    margin: 0px;
+    padding: 0px;
+}
+
+/**
+ * make nav glued to the top at highest layer.
+ */
+nav {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 52px;
+    z-index: 9001;
+}
+
+/**
+ * make content always full but do not overlap with nav.
+ */
+#content {
+    position: absolute;    
+    box-sizing: border-box;
+    width: 100vw;    
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    padding-top:52px;    
+}
+
+/* a bunch of stuff to prevent bootstrap from acting strange on mobile*/
+.navbar-collapse.collapse {
+  display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
+}
+
+/**
+ * custom
+ */
+#content .exclusive {
+    width: 100%;
+    height: 100%;
+    margin: auto;    
+}
+
+.table {
+    display: table;    
+}
+
+.flex {
+    display: flex; 
+    display: -webkit-flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    box-align: center;
+}
+
+.enrollment-box {
+    display; flex;
+    box-shadow: 0px 2px 5px #888888;
+    border: 1px solid #888888;
+    min-width: 300px;
+    padding: 1px;
+} 
+.enrollment-box button {
+    align-self: flex-end;
+}
+ 
+.margined {
+    margin: 2px;    
+}
