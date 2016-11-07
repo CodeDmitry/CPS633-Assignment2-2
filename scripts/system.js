@@ -159,6 +159,14 @@
         };
         
         exports.test = (user_id, fileName, requestSet) => {
+            if (userGroupMap[user_id] == 'Manager') {
+               return {
+                    status: true,
+                    permissions: new Set(['read', 'write', 'execute']),
+                    message: 'You are a manager, permissions are ignored.'
+                }              
+            }
+        
             var permissions = accessControlList[user_id][fileName];
             console.log('testing: ' + fileName + '.');
             console.log(accessControlList[user_id]);
@@ -290,6 +298,7 @@
     exports.listFiles = system.ls;      
 
     exports.test = (options) => {
+
         var fileName = options.fileName;
         var permissions = options.permissions;
         console.log(options);
@@ -302,6 +311,7 @@
         }
         
         var result = system.test(model.currentUser, fileName, permissions);
+        
         if (result == null) {
             return {
                 status: false,
